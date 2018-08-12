@@ -7,5 +7,5 @@ I develop this only occasionally besides studying industrial engineering and man
 So far, the technologies I used:
 * Spring Boot
 * JUnit 5
-* Spring Data (with MySQL and Hibernate)
+* Spring Data (with MySQL and Hibernate, H2 for testing)
 * Lombok

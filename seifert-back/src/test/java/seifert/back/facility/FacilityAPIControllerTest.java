@@ -1,6 +1,5 @@
 package seifert.back.facility;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +10,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import seifert.back.model.Facility;
 import seifert.back.model.repos.FacilityRepository;
-
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,9 +26,6 @@ public class FacilityAPIControllerTest {
     @Autowired
     private FacilityRepository facilityRepository;
 
-    @Autowired
-    ObjectMapper objectMapper;
-
     @Test
     @Disabled
     public void getAllFacilitiesTest_givenUserDoesNotExist() {
@@ -39,7 +33,7 @@ public class FacilityAPIControllerTest {
     }
 
     @Test
-    public void getAllFacilitiesTest() throws IOException {
+    public void getAllFacilitiesTest() {
 
         Iterable<Facility> expected = facilityRepository.findAll();
 
