@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import seifert.back.model.Facility;
 import seifert.back.model.repos.FacilityRepository;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/facilities")
 public class FacilityAPIController {
@@ -17,7 +19,7 @@ public class FacilityAPIController {
     private FacilityRepository facilityRepository;
 
     @GetMapping("/")
-    public Iterable<Facility> getAllFacilities() {
+    public List<Facility> getAllFacilities() {
         LOGGER.info("getAllFacilities() called");
         return facilityRepository.findAll();
     }
