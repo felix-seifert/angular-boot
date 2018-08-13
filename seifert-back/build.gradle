@@ -23,20 +23,18 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     runtime('mysql:mysql-connector-java')
-    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+    testCompile (group: 'com.h2database', name: 'h2', version: '1.4.197')
     compileOnly('org.projectlombok:lombok')
 
     testCompile('org.springframework.boot:spring-boot-starter-test') {
         exclude module: 'junit'
     }
-    testCompile('org.junit.jupiter:junit-jupiter-api:5.2.0')
-    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
-    testCompile('org.junit.platform:junit-platform-runner:1.0.2')
+    testCompile('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+    testCompile('org.mockito:mockito-junit-jupiter:2.21.0')
 
     // for preventing the JAXBException in Java 10
     compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
