@@ -1,5 +1,6 @@
 package seifert.back.model.repos;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,12 @@ public class FacilityRepositoryTest {
     @Autowired
     private FacilityRepository facilityRepository;
 
-    @Test
-    public void findAllTest() {
+    private Facility facilityExpected1;
+    private Facility facilityExpected2;
 
-        Facility facilityExpected1 = Facility.builder()
+    @BeforeEach
+    private void setDatabase() {
+        facilityExpected1 = Facility.builder()
                 .name("Facility 1")
                 .street("First Street")
                 .houseNumber(11)
@@ -35,14 +38,16 @@ public class FacilityRepositoryTest {
         entityManager.persist(facilityExpected1);
         entityManager.flush();
 
-        Facility facilityExpected2 = Facility.builder()
+        facilityExpected2 = Facility.builder()
                 .name("Second Facility")
-                .street("Road 2")
-                .houseNumber(2)
                 .zipCode(22222)
                 .city("Town 2").build();
         entityManager.persist(facilityExpected2);
         entityManager.flush();
+    }
+
+    @Test
+    public void findAllTest() {
 
         List<Facility> facilityListActual = facilityRepository.findAll();
 
@@ -55,18 +60,39 @@ public class FacilityRepositoryTest {
     @Test
     public void findByIDTest() {
 
-        Facility facilityExpected = Facility.builder()
-                .name("Facility 1")
-                .street("First Street")
-                .houseNumber(11)
-                .zipCode(11111)
-                .city("Important City").build();
-        entityManager.persist(facilityExpected);
-        entityManager.flush();
+        Optional<Facility> facilityActual = facilityRepository.findById(facilityExpected1.getId());
 
-        Optional<Facility> facilityActual = facilityRepository.findById(facilityExpected.getId());
+        assertEquals(facilityExpected1, facilityActual.get());
+    }
 
-        assertEquals(facilityExpected, facilityActual.get());
+    @Test
+    public void saveTest() {
+
+        Facility facilityExpected3 = Facility.builder()
+                .name("Facility 3")
+                .street("Street Road")
+                .houseNumber(9)
+                .zipCode(12345)
+                .city("Savings City").build();
+
+        Facility facilityActual = facilityRepository.save(facilityExpected3);
+        List<Facility> facilityListActual = facilityRepository.findAll();
+
+        assertEquals(facilityExpected3, facilityActual);
+        assertEquals(3, facilityListActual.size());
+        assertEquals(facilityExpected3, facilityListActual.get(2));
+
+    }
+
+    @Test
+    public void deleteByIDTest() {
+
+        facilityRepository.deleteById(facilityExpected1.getId());
+        boolean facilityExists = facilityRepository.existsById(facilityExpected1.getId());
+        List<Facility> facilityListActual = facilityRepository.findAll();
+
+        assertEquals(false, facilityExists);
+        assertEquals(1, facilityListActual.size());
     }
 
 }
