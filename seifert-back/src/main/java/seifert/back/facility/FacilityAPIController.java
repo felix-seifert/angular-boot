@@ -8,6 +8,7 @@ import seifert.back.model.Facility;
 import seifert.back.model.repos.FacilityRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/facilities")
@@ -22,6 +23,12 @@ public class FacilityAPIController {
     public List<Facility> getAllFacilities() {
         LOGGER.info("getAllFacilities() called");
         return facilityRepository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Facility> getFacilityByID(@PathVariable Integer id) {
+        LOGGER.info("getFacilityByID(" + id + ") called");
+        return facilityRepository.findById(id);
     }
 
     @PostMapping("/")

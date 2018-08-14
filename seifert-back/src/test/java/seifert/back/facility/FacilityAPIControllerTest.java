@@ -1,5 +1,7 @@
 package seifert.back.facility;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +14,10 @@ import org.springframework.web.client.RestTemplate;
 import seifert.back.model.Facility;
 import seifert.back.model.repos.FacilityRepository;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -28,8 +32,14 @@ public class FacilityAPIControllerTest {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private FacilityRepository facilityRepository;
+
+    private static List<Facility> facilityListExpected;
+    private static Optional<Facility> facilityOptionalExpected;
 
     @Test
     @Disabled
@@ -37,8 +47,8 @@ public class FacilityAPIControllerTest {
         // implement when authentification for APIs exists
     }
 
-    @Test
-    public void getAllFacilitiesTest() {
+    @BeforeAll
+    public static void setup() {
 
         Facility facilityExpected1 = Facility.builder()
                 .id(1)
@@ -54,22 +64,39 @@ public class FacilityAPIControllerTest {
                 .zipCode(22222)
                 .city("Town 2").build();
 
-        List<Facility> facilityList = Arrays.asList(facilityExpected1, facilityExpected2);
-        when(facilityRepository.findAll()).thenReturn(facilityList);
+        facilityListExpected = Arrays.asList(facilityExpected1, facilityExpected2);
+        facilityOptionalExpected = Optional.of(facilityExpected1);
+    }
 
-        Iterable<Facility> expected = facilityRepository.findAll();
+    @Test
+    public void getAllFacilitiesTest() {
+
+        when(facilityRepository.findAll()).thenReturn(facilityListExpected);
 
         List<Facility> actual =
                 restTemplate.getForObject(createLocalURLWithPort("/facilities/"), List.class);
-        
+
         boolean same = true;
-        for(Facility facility : expected) {
+        for(Facility facility : facilityListExpected) {
             if(facility.equals(actual.iterator().next())) {
                 same = false;
             }
         }
 
         assertEquals(true, same);
+    }
+
+    @Test
+    public void getFacilityByIDTest() throws IOException {
+
+        when(facilityRepository.findById(1)).thenReturn(facilityOptionalExpected);
+
+        String actual =
+                restTemplate.getForObject(createLocalURLWithPort("facilities/1"), String.class);
+
+        Facility facilityActual = objectMapper.readValue(actual, Facility.class);
+
+        assertEquals(true, facilityOptionalExpected.get().equals(facilityActual));
     }
 
     @Test
