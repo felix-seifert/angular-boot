@@ -30,7 +30,6 @@ public class FacilityRepositoryTest {
     @BeforeEach
     private void setDatabase() {
         facilityExpected1 = Facility.builder()
-                .id(1)
                 .name("Facility 1")
                 .street("First Street")
                 .houseNumber(11)
@@ -40,7 +39,6 @@ public class FacilityRepositoryTest {
         entityManager.flush();
 
         facilityExpected2 = Facility.builder()
-                .id(2)
                 .name("Second Facility")
                 .zipCode(22222)
                 .city("Town 2").build();
