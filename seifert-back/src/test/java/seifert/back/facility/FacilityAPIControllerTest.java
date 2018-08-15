@@ -78,7 +78,7 @@ public class FacilityAPIControllerTest {
                 new ParameterizedTypeReference<List<Facility>>() {});
 
         assertEquals(HttpStatus.OK, actual.getStatusCode());
-        assertTrue(actual.getBody().stream().allMatch(facility -> facilityListExpected.contains(facility)));
+        assertEquals(facilityListExpected, actual.getBody());
     }
 
     @Test
