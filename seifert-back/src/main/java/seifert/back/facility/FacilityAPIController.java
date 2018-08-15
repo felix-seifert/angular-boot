@@ -42,8 +42,8 @@ public class FacilityAPIController {
         LOGGER.info("Create Facility: {}", facility);
 
         if(facilityRepository.findFacilityByName(facility.getName()).isPresent()) {
-            LOGGER.error(ErrorMessages.GIVEN_FACILITY_NAME_ALREADY_EXISTS.getMessage());
-            throw new EntityAlreadyExistsException(ErrorMessages.GIVEN_FACILITY_NAME_ALREADY_EXISTS.getMessage());
+            LOGGER.error(ErrorMessages.GIVEN_FACILITY_NAME_ALREADY_EXISTS);
+            throw new EntityAlreadyExistsException(ErrorMessages.GIVEN_FACILITY_NAME_ALREADY_EXISTS);
         }
 
         facilityRepository.save(facility);
