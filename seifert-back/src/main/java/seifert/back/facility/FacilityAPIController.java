@@ -27,13 +27,13 @@ public class FacilityAPIController {
 
     @GetMapping("/")
     public List<Facility> getAllFacilities() {
-        LOGGER.info("getAllFacilities() called");
+        LOGGER.info("Get all Facilities");
         return facilityRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public Optional<Facility> getFacilityByID(@PathVariable Integer id) {
-        LOGGER.info("getFacilityByID(" + id + ") called");
+        LOGGER.info("Get Facility with id= {}", id);
         return facilityRepository.findById(id);
     }
 
