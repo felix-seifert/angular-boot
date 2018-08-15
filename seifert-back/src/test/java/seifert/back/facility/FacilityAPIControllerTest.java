@@ -9,10 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import seifert.back.model.Facility;
@@ -78,6 +75,7 @@ public class FacilityAPIControllerTest {
                 new ParameterizedTypeReference<List<Facility>>() {});
 
         assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON_UTF8, actual.getHeaders().getContentType());
         assertEquals(facilityListExpected, actual.getBody());
     }
 
@@ -90,6 +88,7 @@ public class FacilityAPIControllerTest {
                 restTemplate.getForEntity(createLocalURLWithPort("/facilities/1"), Facility.class);
 
         assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON_UTF8, actual.getHeaders().getContentType());
         assertTrue(facilityExpected1.equals(actual.getBody()));
     }
 
