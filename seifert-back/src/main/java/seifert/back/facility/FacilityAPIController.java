@@ -3,7 +3,13 @@ package seifert.back.facility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+import seifert.back.facility.exceptions.EntityAlreadyExistsException;
+import seifert.back.facility.exceptions.ErrorMessages;
 import seifert.back.model.Facility;
 import seifert.back.model.repos.FacilityRepository;
 
@@ -32,20 +38,18 @@ public class FacilityAPIController {
     }
 
     @PostMapping("/")
-    public void postFacility(@RequestParam(value = "name") String name,
-                             @RequestParam(value = "street") String street,
-                             @RequestParam(value = "houseNumber") int houseNumber,
-                             @RequestParam(value = "zipCode") int zipCode,
-                             @RequestParam(value = "city") String city) {
+    public ResponseEntity<String> postFacility(@RequestBody Facility facility, UriComponentsBuilder builder) {
+        LOGGER.info("Create Facility: {}", facility);
 
-        LOGGER.info("postFacility(params) called");
+        if(facilityRepository.findFacilityByName(facility.getName()).isPresent()) {
+            LOGGER.error(ErrorMessages.GIVEN_FACILITY_NAME_ALREADY_EXISTS.getMessage());
+            throw new EntityAlreadyExistsException(ErrorMessages.GIVEN_FACILITY_NAME_ALREADY_EXISTS.getMessage());
+        }
 
-        facilityRepository.save(Facility.builder()
-                .name(name)
-                .street(street)
-                .houseNumber(houseNumber)
-                .zipCode(zipCode)
-                .city(city)
-                .build());
+        facilityRepository.save(facility);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(builder.path("/facilities/{id}").buildAndExpand(facility.getId()).toUri());
+        return new ResponseEntity<String>(httpHeaders, HttpStatus.CREATED);
     }
 }

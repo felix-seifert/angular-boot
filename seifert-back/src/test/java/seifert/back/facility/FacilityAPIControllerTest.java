@@ -93,9 +93,14 @@ public class FacilityAPIControllerTest {
     }
 
     @Test
-    @Disabled
     public void postFacilityTest() {
-        // next step: implementing the test for the post API
+
+        when(facilityRepository.save(facilityExpected1)).thenReturn(facilityExpected1);
+
+        ResponseEntity<Facility> actual =
+                restTemplate.postForEntity(createLocalURLWithPort("/facilities/"), facilityExpected1, Facility.class);
+
+        assertEquals(HttpStatus.CREATED, actual.getStatusCode());
     }
 
     private String createLocalURLWithPort(String uri) {

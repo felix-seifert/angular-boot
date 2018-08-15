@@ -49,26 +49,27 @@ public class FacilityRepositoryTest {
 
     @Test
     public void findAllTest() {
-
         List<Facility> facilityListActual = facilityRepository.findAll();
 
         assertEquals(2, facilityListActual.size());
         assertEquals(facilityExpected1, facilityListActual.get(0));
         assertEquals(facilityExpected2, facilityListActual.get(1));
-
     }
 
     @Test
     public void findByIDTest() {
-
         Optional<Facility> facilityActual = facilityRepository.findById(facilityExpected1.getId());
+        assertEquals(facilityExpected1, facilityActual.get());
+    }
 
+    @Test
+    public void findByNameTest() {
+        Optional<Facility> facilityActual = facilityRepository.findFacilityByName(facilityExpected1.getName());
         assertEquals(facilityExpected1, facilityActual.get());
     }
 
     @Test
     public void saveTest() {
-
         Facility facilityExpected3 = Facility.builder()
                 .name("Facility 3")
                 .street("Street Road")
@@ -82,12 +83,10 @@ public class FacilityRepositoryTest {
         assertEquals(facilityExpected3, facilityActual);
         assertEquals(3, facilityListActual.size());
         assertEquals(facilityExpected3, facilityListActual.get(2));
-
     }
 
     @Test
     public void deleteByIDTest() {
-
         facilityRepository.deleteById(facilityExpected1.getId());
 
         boolean facilityExists = facilityRepository.existsById(facilityExpected1.getId());
