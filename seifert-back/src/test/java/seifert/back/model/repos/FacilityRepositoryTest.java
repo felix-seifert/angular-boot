@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
@@ -88,10 +89,11 @@ public class FacilityRepositoryTest {
     public void deleteByIDTest() {
 
         facilityRepository.deleteById(facilityExpected1.getId());
+
         boolean facilityExists = facilityRepository.existsById(facilityExpected1.getId());
         List<Facility> facilityListActual = facilityRepository.findAll();
 
-        assertEquals(false, facilityExists);
+        assertFalse(facilityExists);
         assertEquals(1, facilityListActual.size());
     }
 
