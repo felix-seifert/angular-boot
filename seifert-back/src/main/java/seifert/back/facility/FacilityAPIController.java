@@ -3,12 +3,14 @@ package seifert.back.facility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import seifert.back.facility.exceptions.EntityAlreadyExistsException;
+import seifert.back.facility.exceptions.EntityIDNotFoundException;
 import seifert.back.facility.exceptions.ErrorMessages;
 import seifert.back.model.Facility;
 import seifert.back.model.repos.FacilityRepository;
@@ -26,15 +28,26 @@ public class FacilityAPIController {
     private FacilityRepository facilityRepository;
 
     @GetMapping("/")
-    public List<Facility> getAllFacilities() {
+    public HttpEntity<List<Facility>> getAllFacilities() {
         LOGGER.info("Get all Facilities");
-        return facilityRepository.findAll();
+        List<Facility> facilityList = facilityRepository.findAll();
+
+        ResponseEntity<List<Facility>> response;
+        if(facilityList.isEmpty()) { response = new ResponseEntity(HttpStatus.NO_CONTENT); }
+        else { response = new ResponseEntity(facilityList, HttpStatus.OK); }
+
+        return response;
     }
 
     @GetMapping("/{id}")
-    public Optional<Facility> getFacilityByID(@PathVariable Integer id) {
-        LOGGER.info("Get Facility with id= {}", id);
-        return facilityRepository.findById(id);
+    public ResponseEntity<Facility> getFacilityByID(@PathVariable Integer id) {
+        LOGGER.info("Get Facility with id={}", id);
+        Optional<Facility> facilityFound = facilityRepository.findById(id);
+        if(!facilityFound.isPresent()) {
+            LOGGER.error(ErrorMessages.USER_ID_NOT_FOUND);
+            throw new EntityIDNotFoundException(ErrorMessages.USER_ID_NOT_FOUND);
+        }
+        return new ResponseEntity<>(facilityFound.get(), HttpStatus.OK);
     }
 
     @PostMapping("/")
@@ -50,6 +63,6 @@ public class FacilityAPIController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(builder.path("/facilities/{id}").buildAndExpand(facility.getId()).toUri());
-        return new ResponseEntity<String>(httpHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 }
