@@ -4,7 +4,7 @@
 
 <ul>
   <li *ngFor="let facility of facilities$">
-    <a routerLink="/facilities">
+    <a routerLink="/facilities/{{facility.id}}">
       {{ facility.name }}
     </a>
     <ul>

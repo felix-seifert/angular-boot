@@ -12,6 +12,7 @@ import { FacilitiesComponent } from './facilities/facilities.component';
 import { ApiDataService } from './data/api-data.service';
 
 import { HttpClientModule } from '@angular/common/http';
+import { FacilityComponent } from './facility/facility.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     MenuComponent,
     ContactComponent,
     HomeComponent,
-    FacilitiesComponent
+    FacilitiesComponent,
+    FacilityComponent
   ],
   imports: [
     BrowserModule,
