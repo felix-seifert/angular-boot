@@ -1,0 +1,17 @@
+<h1>
+  Facilities
+</h1>
+
+<ul>
+  <li *ngFor="let facility of facilities$">
+    <a routerLink="/facilities">
+      {{ facility.name }}
+    </a>
+    <ul>
+      <li>
+        {{ facility.street }}&nbsp;{{ facility.houseNumber }}<br/>
+        {{ facility.zipCode }}&nbsp;{{ facility.city }}
+      </li>
+    </ul>
+  </li>
+</ul>
