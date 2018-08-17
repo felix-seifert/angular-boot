@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/facilities")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FacilityAPIController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FacilityAPIController.class);
