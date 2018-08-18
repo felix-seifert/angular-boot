@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import seifert.back.facility.exceptions.EntityAlreadyExistsException;
-import seifert.back.facility.exceptions.EntityIDNotFoundException;
-import seifert.back.facility.exceptions.ErrorMessages;
+import seifert.back.exceptions.EntityAlreadyExistsException;
+import seifert.back.exceptions.EntityIDNotFoundException;
+import seifert.back.exceptions.ErrorMessages;
 import seifert.back.model.Facility;
 import seifert.back.model.repos.FacilityRepository;
 

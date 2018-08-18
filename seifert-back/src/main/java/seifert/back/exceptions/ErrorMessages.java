@@ -1,4 +1,4 @@
-package seifert.back.facility.exceptions;
+package seifert.back.exceptions;
 
 public class ErrorMessages {
 
