@@ -45,8 +45,8 @@ public class FacilityAPIController {
         LOGGER.info("Get Facility with id={}", id);
         Optional<Facility> facilityFound = facilityRepository.findById(id);
         if(!facilityFound.isPresent()) {
-            LOGGER.error(ErrorMessages.USER_ID_NOT_FOUND);
-            throw new EntityIDNotFoundException(ErrorMessages.USER_ID_NOT_FOUND);
+            LOGGER.error(ErrorMessages.FACILITY_ID_NOT_FOUND);
+            throw new EntityIDNotFoundException(ErrorMessages.FACILITY_ID_NOT_FOUND);
         }
         return new ResponseEntity<>(facilityFound.get(), HttpStatus.OK);
     }
