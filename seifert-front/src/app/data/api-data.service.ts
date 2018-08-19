@@ -14,4 +14,8 @@ export class ApiDataService {
   getFacilityByID(facilityID): Observable<any> {
     return this.http.get('http://localhost:8080/facilities/' + facilityID);
   }
+
+  getAllFacilityContactsForFacilityID(facilityID): Observable<any> {
+    return this.http.get('http://localhost:8080/facilities/' + facilityID + '/contacts');
+  }
 }

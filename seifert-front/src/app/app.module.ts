@@ -8,11 +8,11 @@ import { MenuComponent } from './menu/menu.component';
 import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
+import { FacilityComponent } from './facility/facility.component';
 
 import { ApiDataService } from './data/api-data.service';
 
 import { HttpClientModule } from '@angular/common/http';
-import { FacilityComponent } from './facility/facility.component';
 
 @NgModule({
   declarations: [

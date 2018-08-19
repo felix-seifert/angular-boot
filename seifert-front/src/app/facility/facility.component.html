@@ -4,9 +4,15 @@
 
 <ul>
   <li>
-    <strong>Street:</strong> {{facility$.street}}&nbsp;{{facility$.houseNumber}}
+    <h2>Address</h2>
+    {{facility$.street}}&nbsp;{{facility$.houseNumber}}, {{facility$.zipCode}}&nbsp;{{facility$.city}}
   </li>
-  <li>
-    <strong>City:</strong> {{facility$.zipCode}}&nbsp;{{facility$.city}}
+  <li *ngIf="facilityContacts$">
+    <h2>Contacts</h2>
+    <ul>
+      <li *ngFor="let contact of facilityContacts$">
+        <strong>{{ contact.name }}:</strong>&nbsp;<a href="mailto:{{ contact.emailAddress }}">{{ contact.emailAddress }}</a>, {{ contact.telephoneNumber }}
+      </li>
+    </ul>
   </li>
 </ul>

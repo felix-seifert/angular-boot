@@ -10,6 +10,8 @@ export class FacilityComponent implements OnInit {
 
   facility$: Object;
 
+  facilityContacts$: Object;
+
   constructor(private route: ActivatedRoute, private apiData: ApiDataService) {
     this.route.params.subscribe(params => this.facility$ = params.id);
   }
@@ -17,6 +19,9 @@ export class FacilityComponent implements OnInit {
   ngOnInit() {
     this.apiData.getFacilityByID(this.facility$).subscribe(
       data => this.facility$ = data
+    );
+    this.apiData.getAllFacilityContactsForFacilityID(this.facility$).subscribe(
+      data => this.facilityContacts$ = data
     );
   }
 
