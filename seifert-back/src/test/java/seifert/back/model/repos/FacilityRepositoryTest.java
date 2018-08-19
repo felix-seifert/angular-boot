@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
@@ -37,7 +38,6 @@ public class FacilityRepositoryTest {
                 .zipCode(11111)
                 .city("Important City").build();
         entityManager.persist(facilityExpected1);
-        entityManager.flush();
 
         facilityExpected2 = Facility.builder()
                 .name("Second Facility")
@@ -59,13 +59,19 @@ public class FacilityRepositoryTest {
     @Test
     public void findByIDTest() {
         Optional<Facility> facilityActual = facilityRepository.findById(facilityExpected1.getId());
+        Optional<Facility> facilityActualEmpty = facilityRepository.findById(5);
+        assertTrue(facilityActual.isPresent());
         assertEquals(facilityExpected1, facilityActual.get());
+        assertFalse(facilityActualEmpty.isPresent());
     }
 
     @Test
     public void findByNameTest() {
         Optional<Facility> facilityActual = facilityRepository.findFacilityByName(facilityExpected1.getName());
+        Optional<Facility> facilityActualEmpty = facilityRepository.findFacilityByName("Casino");
+        assertTrue(facilityActual.isPresent());
         assertEquals(facilityExpected1, facilityActual.get());
+        assertFalse(facilityActualEmpty.isPresent());
     }
 
     @Test
@@ -78,9 +84,11 @@ public class FacilityRepositoryTest {
                 .city("Savings City").build();
 
         Facility facilityActual = facilityRepository.save(facilityExpected3);
+        boolean facilityExists = facilityRepository.existsById(facilityExpected3.getId());
         List<Facility> facilityListActual = facilityRepository.findAll();
 
         assertEquals(facilityExpected3, facilityActual);
+        assertTrue(facilityExists);
         assertEquals(3, facilityListActual.size());
         assertEquals(facilityExpected3, facilityListActual.get(2));
     }
@@ -94,6 +102,12 @@ public class FacilityRepositoryTest {
 
         assertFalse(facilityExists);
         assertEquals(1, facilityListActual.size());
+    }
+
+    @Test
+    public void existsByIDTest() {
+        assertTrue(facilityRepository.existsById(facilityExpected1.getId()));
+        assertFalse(facilityRepository.existsById(99));
     }
 
 }

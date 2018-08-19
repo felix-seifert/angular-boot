@@ -84,7 +84,7 @@ public class FacilityAPIController {            // Disable CrossOrigin  for acce
         }
 
         List<FacilityContact> contactList =
-                facilityContactRepository.findFacilityContactsByFacility(facilityRepository.findById(facilityID).get());
+                facilityContactRepository.findFacilityContactsByFacility(facility.get());
 
         ResponseEntity<List<FacilityContact>> response;
         if(contactList.isEmpty()) { response = new ResponseEntity(HttpStatus.NO_CONTENT); }
