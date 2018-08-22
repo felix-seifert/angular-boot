@@ -1,7 +1,6 @@
 package seifert.back.facility;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,17 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import seifert.back.model.Facility;
-import seifert.back.model.repos.FacilityRepository;
+import seifert.back.model.FacilityContact;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -34,10 +36,16 @@ public class FacilityAPIControllerTest {
     private RestTemplate restTemplate;
 
     @MockBean
-    private FacilityRepository facilityRepository;
+    private FacilityService facilityService;
+
+    @MockBean
+    private FacilityContactService facilityContactService;
 
     private static List<Facility> facilityListExpected;
     private static Facility facilityExpected1;
+
+    private static List<FacilityContact> facilityContactListExpected;
+    private static FacilityContact facilityContactExpected1;
 
     @BeforeAll
     public static void setup() {
@@ -55,18 +63,21 @@ public class FacilityAPIControllerTest {
                 .city("Town 2").build();
 
         facilityListExpected = Arrays.asList(facilityExpected1, facilityExpected2);
-    }
 
-    @Test
-    @Disabled
-    public void getAllFacilitiesTest_givenUserDoesNotExist() {
-        // implement when authentification for APIs exists
+        facilityContactExpected1 = FacilityContact.builder()
+                .name("Interesting Person")
+                .emailAddress("very@interesting.com").build();
+
+        FacilityContact facilityContactExpected2 = FacilityContact.builder()
+                .name("Responsible Woman")
+                .telephoneNumber("+12 345 6789").build();
+
+        facilityContactListExpected = Arrays.asList(facilityContactExpected1, facilityContactExpected2);
     }
 
     @Test
     public void getAllFacilitiesTest() {
-
-        when(facilityRepository.findAll()).thenReturn(facilityListExpected);
+        when(facilityService.getAllFacilities()).thenReturn(new ResponseEntity(facilityListExpected, HttpStatus.OK));
 
         ResponseEntity<List<Facility>> actual = restTemplate.exchange(
                 createLocalURLWithPort("/facilities/"),
@@ -81,8 +92,7 @@ public class FacilityAPIControllerTest {
 
     @Test
     public void getFacilityByIDTest() {
-
-        when(facilityRepository.findById(1)).thenReturn(Optional.of(facilityExpected1));
+        when(facilityService.getFacilityByID(1)).thenReturn(new ResponseEntity<>(facilityExpected1, HttpStatus.OK));
 
         ResponseEntity<Facility> actual =
                 restTemplate.getForEntity(createLocalURLWithPort("/facilities/1"), Facility.class);
@@ -93,14 +103,49 @@ public class FacilityAPIControllerTest {
     }
 
     @Test
-    public void postFacilityTest() {
+    public void postFacilityTest() throws URISyntaxException {
+        URI location = new URI("http://localhost:8080/facilities/" + facilityExpected1.getId());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(location);
+        when(facilityService.postFacility(eq(facilityExpected1), any()))
+                .thenReturn(new ResponseEntity<>(httpHeaders, HttpStatus.CREATED));
 
-        when(facilityRepository.save(facilityExpected1)).thenReturn(facilityExpected1);
-
-        ResponseEntity<Facility> actual =
-                restTemplate.postForEntity(createLocalURLWithPort("/facilities/"), facilityExpected1, Facility.class);
+        ResponseEntity<String> actual = restTemplate.postForEntity(createLocalURLWithPort("/facilities/"),
+                facilityExpected1, String.class);
 
         assertEquals(HttpStatus.CREATED, actual.getStatusCode());
+        assertEquals(location, actual.getHeaders().getLocation());
+    }
+
+    @Test
+    public void getAllFacilityContactsForFacilityIDTest() {
+        when(facilityContactService.getAllFacilityContactsForFacilityID(1))
+                .thenReturn(new ResponseEntity(facilityContactListExpected, HttpStatus.OK));
+
+        ResponseEntity<List<FacilityContact>> actual = restTemplate.exchange(
+                createLocalURLWithPort("/facilities/1/contacts"),
+                HttpMethod.GET,
+                HttpEntity.EMPTY,
+                new ParameterizedTypeReference<List<FacilityContact>>() {});
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON_UTF8, actual.getHeaders().getContentType());
+        assertEquals(facilityContactListExpected, actual.getBody());
+    }
+
+    @Test
+    public void postFacilityContactForFacilityIDTest() throws URISyntaxException {
+        URI location = new URI("http://localhost:8080/facilities/1/contacts/1" + facilityContactExpected1.getId());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(location);
+        when(facilityContactService.postFacilityContactForFacilityID(eq(facilityContactExpected1), eq(1), any()))
+                .thenReturn(new ResponseEntity<>(httpHeaders, HttpStatus.CREATED));
+
+        ResponseEntity<String> actual = restTemplate.postForEntity(createLocalURLWithPort("/facilities/1/contacts"),
+                facilityContactExpected1, String.class);
+
+        assertEquals(HttpStatus.CREATED, actual.getStatusCode());
+        assertEquals(location, actual.getHeaders().getLocation());
     }
 
     private String createLocalURLWithPort(String uri) {
