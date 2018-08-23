@@ -50,6 +50,16 @@ public class FacilityContactService {
         return response;
     }
 
+    protected ResponseEntity<FacilityContact> getFacilityContactByID(Integer id) {
+        LOGGER.info("Get Contact with id={}", id);
+        Optional<FacilityContact> contactFound = facilityContactRepository.findById(id);
+        if(!contactFound.isPresent()) {
+            LOGGER.error(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND);
+            throw new EntityIDNotFoundException(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND);
+        }
+        return new ResponseEntity<>(contactFound.get(), HttpStatus.OK);
+    }
+
     protected ResponseEntity<String> postFacilityContactForFacilityID(FacilityContact facilityContact,
                                                                    Integer facilityID,
                                                                    UriComponentsBuilder builder) {
@@ -79,9 +89,8 @@ public class FacilityContactService {
         facilityContactRepository.save(facilityContactWithID);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        // API for this location has to be implemented
-        httpHeaders.setLocation(builder.path("/facilities/{facilityID}/contacts/{contactID}")
-                .buildAndExpand(facilityID, facilityContactWithID.getId()).toUri());
+        httpHeaders.setLocation(builder.path("/facilities/contacts/{contactID}")
+                .buildAndExpand(facilityContactWithID.getId()).toUri());
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 }

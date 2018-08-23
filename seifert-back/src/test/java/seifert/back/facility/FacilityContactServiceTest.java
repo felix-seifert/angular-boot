@@ -107,17 +107,32 @@ public class FacilityContactServiceTest {
     }
 
     @Test
+    public void getFacilityContactByIDTest() {
+        when(facilityContactRepository.findById(1)).thenReturn(Optional.of(facilityContactExpected1));
+        ResponseEntity<FacilityContact> actual = facilityContactService.getFacilityContactByID(1);
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(facilityContactExpected1, actual.getBody());
+    }
+
+    @Test
+    public void getFacilityContactByIDTest_noFacilityContactFound() {
+        when(facilityContactRepository.findById(anyInt())).thenReturn(Optional.empty());
+        Throwable exception = assertThrows(EntityIDNotFoundException.class,
+                () -> facilityContactService.getFacilityContactByID(anyInt()));
+        assertEquals(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND, exception.getMessage());
+    }
+
+    @Test
     public void postFacilityContactForFacilityIDTest() throws URISyntaxException {
-        URI location = new URI(String.format("http://localhost:8080/facilities/%d/contacts/%d",
-                facilityExpected1.getId(), facilityContactExpected1.getId()));
+        URI location = new URI(String.format("http://localhost:8080/facilities/contacts/%d",
+                facilityContactExpected1.getId()));
         when(facilityRepository.findById(1)).thenReturn(Optional.of(facilityExpected1));
         when(facilityContactRepository
                 .findFacilityContactByNameAndFacility(facilityContactExpected1.getName(), facilityExpected1))
                 .thenReturn(Optional.empty());
         when(facilityContactRepository.save(facilityContactExpected1)).thenReturn(facilityContactExpected1);
-        when(uriComponentsBuilder.path("/facilities/{facilityID}/contacts/{contactID}")).thenReturn(uriComponentsBuilder);
-        when(uriComponentsBuilder.buildAndExpand(facilityExpected1.getId(), facilityContactExpected1.getId()))
-                .thenReturn(uriComponents);
+        when(uriComponentsBuilder.path("/facilities/contacts/{contactID}")).thenReturn(uriComponentsBuilder);
+        when(uriComponentsBuilder.buildAndExpand(facilityContactExpected1.getId())).thenReturn(uriComponents);
         when(uriComponents.toUri()).thenReturn(location);
 
         ResponseEntity<String> actual = facilityContactService

@@ -44,6 +44,11 @@ public class FacilityAPIController {            // Disable CrossOrigin  for acce
         return facilityContactService.getAllFacilityContactsForFacilityID(facilityID);
     }
 
+    @GetMapping("/contacts/{id}")
+    public ResponseEntity<FacilityContact> getFacilityContactByID(@PathVariable Integer id) {
+        return facilityContactService.getFacilityContactByID(id);
+    }
+
     @PostMapping("/{facilityID}/contacts")
     public ResponseEntity<String> postFacilityContactForFacilityID(@RequestBody FacilityContact facilityContact,
                                                                    @PathVariable Integer facilityID,

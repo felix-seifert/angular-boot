@@ -77,6 +77,15 @@ public class FacilityContactRepositoryTest {
     }
 
     @Test
+    public void findByIDTest() {
+        Optional<FacilityContact> contactActual = facilityContactRepository.findById(facilityContactExpected1.getId());
+        Optional<FacilityContact> contactActualEmpty = facilityContactRepository.findById(5);
+        assertTrue(contactActual.isPresent());
+        assertEquals(facilityContactExpected1, contactActual.get());
+        assertFalse(contactActualEmpty.isPresent());
+    }
+
+    @Test
     public void saveTest() {
 
         FacilityContact facilityContactExpected3 = FacilityContact.builder()

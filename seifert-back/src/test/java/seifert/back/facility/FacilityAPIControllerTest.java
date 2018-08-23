@@ -134,6 +134,19 @@ public class FacilityAPIControllerTest {
     }
 
     @Test
+    public void getFacilityContactByIDTest() {
+        when(facilityContactService.getFacilityContactByID(1))
+                .thenReturn(new ResponseEntity<>(facilityContactExpected1, HttpStatus.OK));
+
+        ResponseEntity<FacilityContact> actual = restTemplate
+                .getForEntity(createLocalURLWithPort("/facilities/contacts/1"), FacilityContact.class);
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON_UTF8, actual.getHeaders().getContentType());
+        assertTrue(facilityContactExpected1.equals(actual.getBody()));
+    }
+
+    @Test
     public void postFacilityContactForFacilityIDTest() throws URISyntaxException {
         URI location = new URI("http://localhost:8080/facilities/1/contacts/1" + facilityContactExpected1.getId());
         HttpHeaders httpHeaders = new HttpHeaders();
