@@ -39,6 +39,11 @@ public class FacilityAPIController {            // Disable CrossOrigin  for acce
         return facilityService.postFacility(facility, builder);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Facility> deleteFacilityByID(@PathVariable Integer id) {
+        return  facilityService.deleteFacilityByID(id);
+    }
+
     @GetMapping("/{facilityID}/contacts")
     public ResponseEntity<List<FacilityContact>> getAllFacilityContactsForFacilityID(@PathVariable Integer facilityID) {
         return facilityContactService.getAllFacilityContactsForFacilityID(facilityID);

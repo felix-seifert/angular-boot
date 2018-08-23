@@ -122,4 +122,20 @@ public class FacilityServiceTest {
                 () -> facilityService.postFacility(facilityExpected1, uriComponentsBuilder));
         assertEquals(ErrorMessages.GIVEN_FACILITY_NAME_ALREADY_EXISTS, exception.getMessage());
     }
+
+    @Test
+    public void deleteFacilityByIDTest() {
+        when(facilityRepository.existsById(1)).thenReturn(true);
+        ResponseEntity<Facility> actual = facilityService.deleteFacilityByID(1);
+        assertEquals(HttpStatus.NO_CONTENT, actual.getStatusCode());
+        assertEquals(null, actual.getBody());
+    }
+
+    @Test
+    public void deleteFacilityByIDTest_noFacilityFound() {
+        when(facilityRepository.existsById(1)).thenReturn(false);
+        Throwable exception = assertThrows(EntityIDNotFoundException.class,
+                () -> facilityService.deleteFacilityByID(1));
+        assertEquals(ErrorMessages.FACILITY_ID_NOT_FOUND, exception.getMessage());
+    }
 }

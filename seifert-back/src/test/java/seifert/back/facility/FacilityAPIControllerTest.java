@@ -118,6 +118,16 @@ public class FacilityAPIControllerTest {
     }
 
     @Test
+    public void deleteFacilityByIDTest() {
+        when(facilityService.deleteFacilityByID(1)).thenReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT));
+
+        ResponseEntity<Facility> actual = restTemplate.exchange(createLocalURLWithPort("/facilities/1"),
+                HttpMethod.DELETE, HttpEntity.EMPTY, Facility.class);
+
+        assertEquals(HttpStatus.NO_CONTENT, actual.getStatusCode());
+    }
+
+    @Test
     public void getAllFacilityContactsForFacilityIDTest() {
         when(facilityContactService.getAllFacilityContactsForFacilityID(1))
                 .thenReturn(new ResponseEntity(facilityContactListExpected, HttpStatus.OK));

@@ -61,4 +61,17 @@ public class FacilityService {
         httpHeaders.setLocation(builder.path("/facilities/{id}").buildAndExpand(facility.getId()).toUri());
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
+
+    protected ResponseEntity<Facility> deleteFacilityByID(Integer id) throws EntityIDNotFoundException {
+        LOGGER.info("Delete Facility with id={}", id);
+
+        if(!facilityRepository.existsById(id)) {
+            LOGGER.error(ErrorMessages.FACILITY_ID_NOT_FOUND);
+            throw new EntityIDNotFoundException(ErrorMessages.FACILITY_ID_NOT_FOUND);
+        }
+
+        facilityRepository.deleteById(id);
+
+        return new ResponseEntity<Facility>(HttpStatus.NO_CONTENT);
+    }
 }
