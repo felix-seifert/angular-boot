@@ -62,6 +62,22 @@ public class FacilityService {
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 
+    protected ResponseEntity<Facility> putFacility(Integer id, Facility facility) throws EntityIDNotFoundException {
+        LOGGER.info("Update Facility with id={}", id);
+
+        if(!facilityRepository.existsById(id)) {
+            LOGGER.error(ErrorMessages.FACILITY_ID_NOT_FOUND);
+            throw new EntityIDNotFoundException(ErrorMessages.FACILITY_ID_NOT_FOUND);
+        }
+
+        Facility newFacility = Facility.builder().id(id).name(facility.getName()).street(facility.getStreet())
+                .houseNumber(facility.getHouseNumber()).zipCode(facility.getZipCode()).city(facility.getCity()).build();
+
+        facilityRepository.save(newFacility);
+
+        return new ResponseEntity<>(newFacility, HttpStatus.OK);
+    }
+
     protected ResponseEntity<Facility> deleteFacilityByID(Integer id) throws EntityIDNotFoundException {
         LOGGER.info("Delete Facility with id={}", id);
 

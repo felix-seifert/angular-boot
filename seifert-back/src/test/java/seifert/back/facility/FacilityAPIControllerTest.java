@@ -118,6 +118,21 @@ public class FacilityAPIControllerTest {
     }
 
     @Test
+    public void putFacilityTest() {
+        Facility newFacility = Facility.builder().id(1)
+                .name(facilityExpected1.getName() + "new").city("new").build();
+        when(facilityService.putFacility(1, newFacility))
+                .thenReturn(new ResponseEntity<>(newFacility, HttpStatus.OK));
+
+        ResponseEntity<Facility> actual = restTemplate.exchange(createLocalURLWithPort("facilities/1"),
+                HttpMethod.PUT, new HttpEntity<>(newFacility), Facility.class);
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON_UTF8, actual.getHeaders().getContentType());
+        assertEquals(newFacility, actual.getBody());
+    }
+
+    @Test
     public void deleteFacilityByIDTest() {
         when(facilityService.deleteFacilityByID(1)).thenReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT));
 

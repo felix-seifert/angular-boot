@@ -124,6 +124,29 @@ public class FacilityServiceTest {
     }
 
     @Test
+    public void putFacilityTest() {
+        Facility newFacility = Facility.builder().id(facilityExpected1.getId())
+                .name(facilityExpected1.getName() + "new").city("new").build();
+        when(facilityRepository.existsById(1)).thenReturn(true);
+        when(facilityRepository.save(newFacility)).thenReturn(newFacility);
+
+        ResponseEntity<Facility> actual = facilityService.putFacility(1, newFacility);
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(newFacility, actual.getBody());
+    }
+
+    @Test
+    public void putFacilityTest_noFacilityFound() {
+        Facility newFacility = Facility.builder().id(facilityExpected1.getId())
+                .name(facilityExpected1.getName() + "new").city("new").build();
+        when(facilityRepository.existsById(1)).thenReturn(false);
+        Throwable exception = assertThrows(EntityIDNotFoundException.class,
+                () -> facilityService.putFacility(1, newFacility));
+        assertEquals(ErrorMessages.FACILITY_ID_NOT_FOUND, exception.getMessage());
+    }
+
+    @Test
     public void deleteFacilityByIDTest() {
         when(facilityRepository.existsById(1)).thenReturn(true);
         ResponseEntity<Facility> actual = facilityService.deleteFacilityByID(1);
