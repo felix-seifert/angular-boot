@@ -65,4 +65,10 @@ public class FacilityAPIController {            // Disable CrossOrigin  for acce
                                                                    UriComponentsBuilder builder) {
         return facilityContactService.postFacilityContactForFacilityID(facilityContact, facilityID, builder);
     }
+
+    @PutMapping("/contacts/{id}")
+    public ResponseEntity<FacilityContact> putFacilityContact(@PathVariable Integer id,
+                                                              @RequestBody FacilityContact contact) {
+        return facilityContactService.putFacilityContact(id, contact);
+    }
 }

@@ -186,6 +186,21 @@ public class FacilityAPIControllerTest {
         assertEquals(location, actual.getHeaders().getLocation());
     }
 
+    @Test
+    public void putFacilityContactTest() {
+        FacilityContact newContact = FacilityContact.builder().id(facilityContactExpected1.getId())
+                .name(facilityContactExpected1.getName() + " new").emailAddress("changed@email.com").build();
+        when(facilityContactService.putFacilityContact(1, newContact))
+                .thenReturn(new ResponseEntity<>(newContact, HttpStatus.OK));
+
+        ResponseEntity<FacilityContact> actual = restTemplate.exchange(
+                createLocalURLWithPort("facilities/contacts/1"),
+                HttpMethod.PUT, new HttpEntity<>(newContact), FacilityContact.class);
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON_UTF8, actual.getHeaders().getContentType());
+        assertEquals(newContact, actual.getBody());
+    }
     private String createLocalURLWithPort(String uri) {
         return "http://localhost:" + port + uri;
     }

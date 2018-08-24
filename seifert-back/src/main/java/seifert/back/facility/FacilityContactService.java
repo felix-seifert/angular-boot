@@ -93,4 +93,24 @@ public class FacilityContactService {
                 .buildAndExpand(facilityContactWithID.getId()).toUri());
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
+
+    protected ResponseEntity<FacilityContact> putFacilityContact(Integer id, FacilityContact contact)
+            throws EntityIDNotFoundException {
+        LOGGER.info("Update FacilityContact with id={}", id);
+
+        Optional<FacilityContact> oldContact = facilityContactRepository.findById(id);
+
+        if(!oldContact.isPresent()) {
+            LOGGER.error(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND);
+            throw new EntityIDNotFoundException(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND);
+        }
+
+        FacilityContact newContact = FacilityContact.builder().id(id).name(contact.getName())
+                .emailAddress(contact.getEmailAddress()).telephoneNumber(contact.getTelephoneNumber())
+                .facility(oldContact.get().getFacility()).build();
+
+        facilityContactRepository.save(newContact);
+
+        return new ResponseEntity<>(newContact, HttpStatus.OK);
+    }
 }

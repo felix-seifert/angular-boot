@@ -135,8 +135,8 @@ public class FacilityContactServiceTest {
         when(uriComponentsBuilder.buildAndExpand(facilityContactExpected1.getId())).thenReturn(uriComponents);
         when(uriComponents.toUri()).thenReturn(location);
 
-        ResponseEntity<String> actual = facilityContactService
-                .postFacilityContactForFacilityID(facilityContactExpected1, 1, uriComponentsBuilder);
+        ResponseEntity<String> actual = facilityContactService.postFacilityContactForFacilityID(
+                facilityContactExpected1, 1, uriComponentsBuilder);
 
         assertEquals(HttpStatus.CREATED, actual.getStatusCode());
         assertEquals(location, actual.getHeaders().getLocation());
@@ -159,5 +159,28 @@ public class FacilityContactServiceTest {
         Throwable exception = assertThrows(EntityAlreadyExistsException.class, () -> facilityContactService
                 .postFacilityContactForFacilityID(facilityContactExpected1, 1, uriComponentsBuilder));
         assertEquals(ErrorMessages.GIVEN_FACILITY_CONTACT_NAME_ALREADY_EXISTS, exception.getMessage());
+    }
+
+    @Test
+    public void putFacilityContactTest() {
+        FacilityContact newContact = FacilityContact.builder().id(1)
+                .name(facilityContactExpected1.getName() + " new").emailAddress("changed@email.com").build();
+        when(facilityContactRepository.findById(1)).thenReturn(Optional.of(facilityContactExpected1));
+        when(facilityContactRepository.save(newContact)).thenReturn(newContact);
+
+        ResponseEntity<FacilityContact> actual = facilityContactService.putFacilityContact(1, newContact);
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
+        assertEquals(newContact, actual.getBody());
+    }
+
+    @Test
+    public void putFacilityContactTest_noFacilityContactFound() {
+        FacilityContact newContact = FacilityContact.builder().id(facilityContactExpected1.getId())
+                .name(facilityContactExpected1.getName() + " new").emailAddress("changed@email.com").build();
+        when(facilityContactRepository.findById(1)).thenReturn(Optional.empty());
+        Throwable exception = assertThrows(EntityIDNotFoundException.class,
+                () -> facilityContactService.putFacilityContact(1, newContact));
+        assertEquals(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND, exception.getMessage());
     }
 }
