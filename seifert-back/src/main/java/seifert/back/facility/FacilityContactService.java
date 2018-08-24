@@ -113,4 +113,17 @@ public class FacilityContactService {
 
         return new ResponseEntity<>(newContact, HttpStatus.OK);
     }
+
+    protected ResponseEntity<FacilityContact> deleteFacilityContactByID(Integer id) throws EntityIDNotFoundException{
+        LOGGER.info("Delete FacilityContact with id={}", id);
+
+        if(!facilityContactRepository.existsById(id)) {
+            LOGGER.error(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND);
+            throw new EntityIDNotFoundException(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND);
+        }
+
+        facilityContactRepository.deleteById(id);
+
+        return new ResponseEntity<FacilityContact>(HttpStatus.NO_CONTENT);
+    }
 }

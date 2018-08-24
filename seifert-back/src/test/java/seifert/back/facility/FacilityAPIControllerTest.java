@@ -201,6 +201,19 @@ public class FacilityAPIControllerTest {
         assertEquals(MediaType.APPLICATION_JSON_UTF8, actual.getHeaders().getContentType());
         assertEquals(newContact, actual.getBody());
     }
+
+    @Test
+    public void deleteFacilityContactByIDTest() {
+        when(facilityContactService.deleteFacilityContactByID(1))
+                .thenReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT));
+
+        ResponseEntity<FacilityContact> actual = restTemplate.exchange(
+                createLocalURLWithPort("/facilities/contacts/1"),
+                HttpMethod.DELETE, HttpEntity.EMPTY, FacilityContact.class);
+
+        assertEquals(HttpStatus.NO_CONTENT, actual.getStatusCode());
+    }
+
     private String createLocalURLWithPort(String uri) {
         return "http://localhost:" + port + uri;
     }

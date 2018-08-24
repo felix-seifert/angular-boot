@@ -183,4 +183,20 @@ public class FacilityContactServiceTest {
                 () -> facilityContactService.putFacilityContact(1, newContact));
         assertEquals(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND, exception.getMessage());
     }
+
+    @Test
+    public void deleteFacilityContactByIDTest() {
+        when(facilityContactRepository.existsById(1)).thenReturn(true);
+        ResponseEntity<FacilityContact> actual = facilityContactService.deleteFacilityContactByID(1);
+        assertEquals(HttpStatus.NO_CONTENT, actual.getStatusCode());
+        assertEquals(null, actual.getBody());
+    }
+
+    @Test
+    public void deleteFacilityContactByIDTest_noFacilityFound() {
+        when(facilityContactRepository.existsById(1)).thenReturn(false);
+        Throwable exception = assertThrows(EntityIDNotFoundException.class,
+                () -> facilityContactService.deleteFacilityContactByID(1));
+        assertEquals(ErrorMessages.FACILITY_CONTACT_ID_NOT_FOUND, exception.getMessage());
+    }
 }
