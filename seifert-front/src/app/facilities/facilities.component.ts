@@ -7,14 +7,17 @@ import { ApiDataService } from '../data/api-data.service';
 })
 export class FacilitiesComponent implements OnInit {
 
-  facilities$: Object;
+  private facilities: Facility[];
 
-  constructor(private apiData: ApiDataService) { }
+  constructor(private apiDataService: ApiDataService) { }
 
   ngOnInit() {
-    this.apiData.getAllFacilities().subscribe(data => {
-      this.facilities$ = data;
-    });
+    this.getAllFacilities();
   }
 
+  private getAllFacilities() {
+    this.apiDataService.getAllFacilities().subscribe(
+      data => this.facilities = data
+    );
+  }
 }

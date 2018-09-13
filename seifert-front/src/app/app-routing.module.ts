@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContactComponent } from './contact/contact.component';
-import {HomeComponent} from './home/home.component';
-import {FacilitiesComponent} from './facilities/facilities.component';
-import {FacilityComponent} from './facility/facility.component';
+import { HomeComponent } from './home/home.component';
+import { FacilitiesComponent } from './facilities/facilities.component';
+import { FacilityComponent } from './facility/facility.component';
 
 const routes: Routes = [
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
     component: FacilitiesComponent
   },
   {
-    path: 'facilities/:id',
+    path: 'facilities/details/:id',
     component: FacilityComponent
   },
   {

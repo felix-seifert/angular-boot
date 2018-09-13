@@ -63,7 +63,6 @@ public class FacilityContactService {
     protected ResponseEntity<String> postFacilityContactForFacilityID(FacilityContact facilityContact,
                                                                    Integer facilityID,
                                                                    UriComponentsBuilder builder) {
-
         LOGGER.info("Create FacilityContact: {}", facilityContact);
 
         Optional<Facility> facility = facilityRepository.findById(facilityID);
@@ -84,7 +83,6 @@ public class FacilityContactService {
                 .telephoneNumber(facilityContact.getTelephoneNumber())
                 .facility(facility.get())
                 .build();
-
 
         facilityContactRepository.save(facilityContactWithID);
 
@@ -124,6 +122,6 @@ public class FacilityContactService {
 
         facilityContactRepository.deleteById(id);
 
-        return new ResponseEntity<FacilityContact>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

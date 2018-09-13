@@ -1,7 +1,5 @@
 package seifert.back.facility;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +13,6 @@ import java.util.List;
 @RequestMapping("/facilities")
 @CrossOrigin(origins = "http://localhost:4200") // Exposes the APIs only to localhost on port 4200.
 public class FacilityAPIController {            // Disable CrossOrigin  for access via other programmes (e.g. Postman).
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FacilityAPIController.class);
 
     @Autowired
     private FacilityService facilityService;

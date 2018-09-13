@@ -3,8 +3,8 @@
 </h1>
 
 <ul>
-  <li *ngFor="let facility of facilities$">
-    <a routerLink="/facilities/{{facility.id}}">
+  <li *ngFor="let facility of facilities">
+    <a routerLink="/facilities/details/{{facility.id}}">
       {{ facility.name }}
     </a>
     <ul>
