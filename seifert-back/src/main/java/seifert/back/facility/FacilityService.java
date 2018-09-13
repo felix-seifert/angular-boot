@@ -46,7 +46,7 @@ public class FacilityService {
         return new ResponseEntity<>(facilityFound.get(), HttpStatus.OK);
     }
 
-    protected ResponseEntity<String> postFacility(Facility facility, UriComponentsBuilder builder)
+    protected ResponseEntity<Facility> postFacility(Facility facility, UriComponentsBuilder builder)
             throws EntityAlreadyExistsException {
         LOGGER.info("Create Facility: {}", facility);
 
@@ -55,11 +55,11 @@ public class FacilityService {
             throw new EntityAlreadyExistsException(ErrorMessages.GIVEN_FACILITY_NAME_ALREADY_EXISTS);
         }
 
-        facilityRepository.save(facility);
+        Facility facilityCreated = facilityRepository.save(facility);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(builder.path("/facilities/{id}").buildAndExpand(facility.getId()).toUri());
-        return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(facilityCreated, httpHeaders, HttpStatus.CREATED);
     }
 
     protected ResponseEntity<Facility> putFacility(Integer id, Facility facility) throws EntityIDNotFoundException {

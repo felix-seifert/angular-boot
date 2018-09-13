@@ -108,10 +108,11 @@ public class FacilityServiceTest {
         when(uriComponentsBuilder.buildAndExpand(facilityExpected1.getId())).thenReturn(uriComponents);
         when(uriComponents.toUri()).thenReturn(location);
 
-        ResponseEntity<String> actual = facilityService.postFacility(facilityExpected1, uriComponentsBuilder);
+        ResponseEntity<Facility> actual = facilityService.postFacility(facilityExpected1, uriComponentsBuilder);
 
         assertEquals(HttpStatus.CREATED, actual.getStatusCode());
         assertEquals(location, actual.getHeaders().getLocation());
+        assertEquals(facilityExpected1, actual.getBody());
     }
 
     @Test

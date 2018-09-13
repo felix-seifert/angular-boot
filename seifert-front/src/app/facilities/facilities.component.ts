@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiDataService } from '../data/api-data.service';
+import { Facility } from '../facility/facility';
 
 @Component({
   selector: 'app-facilities',

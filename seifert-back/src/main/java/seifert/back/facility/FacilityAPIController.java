@@ -31,7 +31,7 @@ public class FacilityAPIController {            // Disable CrossOrigin  for acce
     }
 
     @PostMapping("")
-    public ResponseEntity<String> postFacility(@RequestBody Facility facility, UriComponentsBuilder builder) {
+    public ResponseEntity<Facility> postFacility(@RequestBody Facility facility, UriComponentsBuilder builder) {
         return facilityService.postFacility(facility, builder);
     }
 
