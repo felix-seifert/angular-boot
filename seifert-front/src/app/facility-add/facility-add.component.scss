@@ -1,0 +1,21 @@
+input[type=text] {
+  padding: 8px;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 8px 8px 8px 0;
+  display: inline-block;
+}
+
+button {
+  background-color: #006DB6;
+  color: #FFFFFF;
+  padding: 8px 20px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

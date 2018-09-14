@@ -9,6 +9,7 @@ import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { FacilityComponent } from './facility/facility.component';
+import { FacilityAddComponent } from './facility-add/facility-add.component';
 
 import { ApiDataService } from './data/api-data.service';
 
@@ -21,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     ContactComponent,
     HomeComponent,
     FacilitiesComponent,
-    FacilityComponent
+    FacilityComponent,
+    FacilityAddComponent
   ],
   imports: [
     BrowserModule,

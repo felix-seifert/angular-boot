@@ -19,6 +19,8 @@ export class ApiDataService {
     return this.httpClient.get<Facility>(this.HOST + '/facilities/' + facilityID);
   }
 
+  postFacility(facility: Facility): Observable<Facility> {
+    return this.httpClient.post<Facility>(this.HOST + '/facilities/', facility);
   }
 
   getAllFacilityContactsForFacilityID(facilityID): Observable<FacilityContact[]> {

@@ -1,0 +1,26 @@
+<h1>
+  Add Facility
+</h1>
+<label>
+  Name:
+</label><br />
+<input type="text" #name /><br />
+<label>
+  Street:
+</label><br />
+<input type="text" #street /><br />
+<label>
+  House Number:
+</label><br />
+<input type="text" #houseNumber /><br />
+<label>
+  ZIP Code:
+</label><br />
+<input type="text" #zipCode /><br />
+<label>
+  City:
+</label><br />
+<input type="text" #city /><br />
+<button (click)="postFacility(name.value, street.value, houseNumber.value, zipCode.value, city.value)">
+  Create Facility
+</button>

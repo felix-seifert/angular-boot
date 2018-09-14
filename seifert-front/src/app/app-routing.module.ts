@@ -4,6 +4,7 @@ import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { FacilityComponent } from './facility/facility.component';
+import { FacilityAddComponent } from './facility-add/facility-add.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
   {
     path: 'facilities',
     component: FacilitiesComponent
+  },
+  {
+    path: 'facilities/add',
+    component: FacilityAddComponent
   },
   {
     path: 'facilities/details/:id',
