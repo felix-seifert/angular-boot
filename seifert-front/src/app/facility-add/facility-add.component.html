@@ -1,26 +1,63 @@
 <h1>
   Add Facility
 </h1>
-<label>
-  Name:
-</label><br />
-<input type="text" #name /><br />
-<label>
-  Street:
-</label><br />
-<input type="text" #street /><br />
-<label>
-  House Number:
-</label><br />
-<input type="text" #houseNumber /><br />
-<label>
-  ZIP Code:
-</label><br />
-<input type="text" #zipCode /><br />
-<label>
-  City:
-</label><br />
-<input type="text" #city /><br />
-<button (click)="postFacility(name.value, street.value, houseNumber.value, zipCode.value, city.value)">
-  Create Facility
-</button>
+<div class="grey-box">
+  <div class="row">
+    <div class="col-20">
+      <label>
+        Name:
+      </label>
+    </div>
+    <div class="col-80">
+      <input type="text" #name/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-20">
+      <label>
+        Street:
+      </label>
+    </div>
+    <div class="col-80">
+      <input type="text" #street/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-20">
+      <label>
+        House Number:
+      </label>
+    </div>
+    <div class="col-80">
+      <input type="text" #houseNumber/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-20">
+      <label>
+        ZIP Code:
+      </label>
+    </div>
+    <div class="col-80">
+      <input type="text" #zipCode/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-20">
+      <label>
+        City:
+      </label>
+    </div>
+    <div class="col-80">
+      <input type="text" #city/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-20">&nbsp;</div>
+    <div class="col-80">
+      <button (click)="postFacility(name.value, street.value, houseNumber.value, zipCode.value, city.value)">
+        Create Facility
+      </button>
+    </div>
+  </div>
+</div>
