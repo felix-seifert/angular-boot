@@ -108,13 +108,15 @@ public class FacilityAPIControllerTest {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(location);
         when(facilityService.postFacility(eq(facilityExpected1), any()))
-                .thenReturn(new ResponseEntity<>(httpHeaders, HttpStatus.CREATED));
+                .thenReturn(new ResponseEntity<>(facilityExpected1, httpHeaders, HttpStatus.CREATED));
 
-        ResponseEntity<String> actual = restTemplate.postForEntity(createLocalURLWithPort("/facilities/"),
-                facilityExpected1, String.class);
+        ResponseEntity<Facility> actual = restTemplate.postForEntity(createLocalURLWithPort("/facilities/"),
+                facilityExpected1, Facility.class);
 
         assertEquals(HttpStatus.CREATED, actual.getStatusCode());
+        assertEquals(MediaType.APPLICATION_JSON_UTF8, actual.getHeaders().getContentType());
         assertEquals(location, actual.getHeaders().getLocation());
+        assertEquals(facilityExpected1, actual.getBody());
     }
 
     @Test
