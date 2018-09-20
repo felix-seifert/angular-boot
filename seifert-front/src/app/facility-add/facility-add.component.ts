@@ -10,8 +10,6 @@ import { Facility } from '../facility/facility';
 })
 export class FacilityAddComponent implements OnInit {
 
-  facilityOld: Facility;
-
   constructor(private route: ActivatedRoute, private router: Router, private apiDataService: ApiDataService) { }
 
   ngOnInit() {
@@ -25,7 +23,7 @@ export class FacilityAddComponent implements OnInit {
     city = city.trim();
     const facilityNew: Facility = { name, street, houseNumber, zipCode, city } as Facility;
 
-    this.apiDataService.postFacility(facilityNew).subscribe(data => this.facilityOld = data);
-    this.router.navigate(['/facilities/']);
+    this.apiDataService.postFacility(facilityNew).subscribe(
+      facility => this.router.navigate(['/facilities/details/' + facility.id]));
   }
 }
