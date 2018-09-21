@@ -10,12 +10,12 @@ import { FacilityContact } from './facility-contact';
 })
 export class FacilityComponent implements OnInit {
 
-  private facility: Facility;
 
-  private facilityContacts: FacilityContact[];
+  public facility: Facility;
 
   constructor(private route: ActivatedRoute, private apiDataService: ApiDataService) {
     this.route.params.subscribe(params => this.facility = params.id);
+  public facilityContacts: FacilityContact[];
   }
 
   ngOnInit() {

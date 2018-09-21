@@ -8,7 +8,7 @@ import { Facility } from '../facility/facility';
 })
 export class FacilitiesComponent implements OnInit {
 
-  private facilities: Facility[];
+  public facilities: Facility[];
 
   constructor(private apiDataService: ApiDataService) { }
 

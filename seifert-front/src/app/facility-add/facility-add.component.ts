@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiDataService } from '../data/api-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Facility } from '../facility/facility';
