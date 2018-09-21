@@ -1,18 +1,27 @@
-<h1>
-  {{ facility.name }}
-</h1>
+<div *ngIf="facility">
+  <h1>
+    {{ facility.name }}
+    <span class="button-right">
+      <a routerLink="/facilities/edit/{{facility.id}}"><i class="material-icons">edit</i></a>
+    </span>
+    <span class="button-right">
+      <a routerLink="/facilities/details/{{facility.id}}/contacts/add"><i class="material-icons">person_add</i></a>
+    </span>
+  </h1>
 
-<ul>
-  <li>
-    <h2>Address</h2>
-    {{facility.street}}&nbsp;{{facility.houseNumber}}, {{facility.zipCode}}&nbsp;{{facility.city}}
-  </li>
-  <li *ngIf="facilityContacts">
-    <h2>Contacts</h2>
-    <ul>
-      <li *ngFor="let contact of facilityContacts">
-        <strong>{{ contact.name }}:</strong>&nbsp;<a href="mailto:{{ contact.emailAddress }}">{{ contact.emailAddress }}</a>, {{ contact.telephoneNumber }}
-      </li>
-    </ul>
-  </li>
-</ul>
+  <ul>
+    <li>
+      <h2>Address</h2>
+      {{facility.street}}&nbsp;{{facility.houseNumber}}, {{facility.zipCode}}&nbsp;{{facility.city}}
+    </li>
+    <li *ngIf="facilityContacts">
+      <h2>Contacts</h2>
+      <ul>
+        <li *ngFor="let contact of facilityContacts">
+          <strong>{{ contact.name }}:</strong>&nbsp;
+          <a href="mailto:{{ contact.emailAddress }}">{{ contact.emailAddress }}</a>, {{ contact.telephoneNumber }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

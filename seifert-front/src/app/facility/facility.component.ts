@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiDataService } from '../data/api-data.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Facility } from './facility';
 import { FacilityContact } from './facility-contact';
 
@@ -10,12 +10,14 @@ import { FacilityContact } from './facility-contact';
 })
 export class FacilityComponent implements OnInit {
 
+  private facilityID;
 
   public facility: Facility;
 
-  constructor(private route: ActivatedRoute, private apiDataService: ApiDataService) {
-    this.route.params.subscribe(params => this.facility = params.id);
   public facilityContacts: FacilityContact[];
+
+  constructor(private route: ActivatedRoute, private router: Router, private apiDataService: ApiDataService) {
+    this.route.params.subscribe(params => this.facilityID = params.id);
   }
 
   ngOnInit() {
@@ -24,13 +26,13 @@ export class FacilityComponent implements OnInit {
   }
 
   private getFacilityByID() {
-    this.apiDataService.getFacilityByID(this.facility).subscribe(
+    this.apiDataService.getFacilityByID(this.facilityID).subscribe(
       data => this.facility = data
     );
   }
 
   private getAllFacilityContactsForFacilityID() {
-    this.apiDataService.getAllFacilityContactsForFacilityID(this.facility).subscribe(
+    this.apiDataService.getAllFacilityContactsForFacilityID(this.facilityID).subscribe(
       data => this.facilityContacts = data
     );
   }
