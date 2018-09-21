@@ -36,4 +36,10 @@ export class FacilityComponent implements OnInit {
       data => this.facilityContacts = data
     );
   }
+
+  public deleteFacility() {
+    this.apiDataService.deleteFacility(this.facility.id).subscribe(
+      data => this.router.navigate(['/facilities/'])
+    );
+  }
 }

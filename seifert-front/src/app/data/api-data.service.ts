@@ -23,6 +23,10 @@ export class ApiDataService {
     return this.httpClient.post<Facility>(this.HOST + '/facilities/', facility);
   }
 
+  deleteFacility(facilityID): Observable<any> {
+    return this.httpClient.delete(this.HOST + '/facilities/' + facilityID);
+  }
+
   getAllFacilityContactsForFacilityID(facilityID): Observable<FacilityContact[]> {
     return this.httpClient.get<FacilityContact[]>(this.HOST + '/facilities/' + facilityID + '/contacts');
   }
